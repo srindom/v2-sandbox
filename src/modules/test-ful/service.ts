@@ -4,7 +4,7 @@ class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
   static identifier = "my-fulfillment-provider"
 
   async createFulfillment(data, items, order, fulfillment): Promise<any> {
-    console.log(fulfillment)
+    console.log(data, items, order, fulfillment)
     const str = "test"
     return {}
   }

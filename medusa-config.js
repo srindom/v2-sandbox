@@ -30,8 +30,23 @@ module.exports = defineConfig({
     }
   },
   modules: {
+    [Modules.NOTIFICATION]: {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          {
+            resolve: "./modules/resend",
+            id: "resend",
+            options: {
+              channels: ["email"],
+              api_key: process.env.RESEND_API_KEY
+            },
+          },
+        ],
+      },
+    },
     [Modules.FULFILLMENT]: {
-      resolve: "@medusajs/fulfillment",
+      resolve: "@medusajs/medusa/fulfillment",
       options: {
         providers: [
           {
