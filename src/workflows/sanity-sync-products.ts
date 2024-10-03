@@ -21,6 +21,8 @@ const syncStep = step(
     const productModule = container.resolve(Modules.PRODUCT)
     const sanityModule: SanityModuleService = container.resolve("sanity")
 
+    let total = 0
+
     const batchSize = 10
     let hasMore = true
     let offset = 0
@@ -48,9 +50,10 @@ const syncStep = step(
 
       offset += batchSize
       hasMore = offset < count
+      total += products.length
     }
 
-    return new StepResponse()
+    return new StepResponse({ total })
   }
 )
 

@@ -1,7 +1,7 @@
 import type { SubscriberArgs, SubscriberConfig } from "@medusajs/medusa"
 import { sanityProductSyncWorkflow } from "../workflows/sanity-sync-products"
 
-export default async function mySub({
+export default async function upsertSanityProduct({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
@@ -13,5 +13,5 @@ export default async function mySub({
 }
 
 export const config: SubscriberConfig = {
-  event: "product.created",
+  event: ["product.created", "product.updated"],
 }

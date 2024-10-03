@@ -16,9 +16,12 @@ export const GET = async (req: MedusaRequest, res) => {
     Modules.WORKFLOW_ENGINE
   )
 
-  const [executions, count] = await wfEngine.listAndCountWorkflowExecutions({
-    workflow_id: sanityProductSyncWorkflow.getName(),
-  })
+  const [executions, count] = await wfEngine.listAndCountWorkflowExecutions(
+    {
+      workflow_id: sanityProductSyncWorkflow.getName(),
+    },
+    { order: { created_at: "DESC" } }
+  )
 
   res.json({ workflow_executions: executions, count })
 }

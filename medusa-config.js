@@ -3,21 +3,21 @@ const { Modules, loadEnv, defineConfig } = require("@medusajs/utils")
 loadEnv(process.env.NODE_ENV, process.cwd())
 
 module.exports = defineConfig({
-  admin: {
-    vite: (config) => {
-      return {
-        ...config,
-        server: {
-          ...config.server,
-          fs: {
-            ...config.server.fs,
-            allow: ["."],
-            strict: false,
-          },
-        },
-      }
-    },
-  },
+  // admin: {
+  //   vite: (config) => {
+  //     return {
+  //       ...config,
+  //       server: {
+  //         ...config.server,
+  //         fs: {
+  //           ...config.server.fs,
+  //           allow: ["."],
+  //           strict: false,
+  //         },
+  //       },
+  //     }
+  //   },
+  // },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
