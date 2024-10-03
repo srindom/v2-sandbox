@@ -6,7 +6,7 @@ module.exports = {
     const traceExporter = new OTLPTraceExporter({
       url: "https://api.axiom.co/v1/traces", // Axiom API endpoint for trace data
       headers: {
-        "Authorization": "Bearer xaat-ec4810cf-5578-449b-8663-682acc052a3d",
+        Authorization: `Bearer ${process.env.AXIOM_TOKEN}`,
         "X-Axiom-Dataset": "seb-test", // Replace $DATASET with your dataset
       },
     });
