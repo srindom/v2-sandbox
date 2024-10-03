@@ -1,4 +1,4 @@
-const { Modules, loadEnv, defineConfig } = require('@medusajs/utils')
+const { Modules, loadEnv, defineConfig } = require("@medusajs/utils")
 
 loadEnv(process.env.NODE_ENV, process.cwd())
 
@@ -15,7 +15,7 @@ module.exports = defineConfig({
             strict: false,
           },
         },
-      };
+      }
     },
   },
   projectConfig: {
@@ -27,9 +27,18 @@ module.exports = defineConfig({
       authCors: process.env.AUTH_CORS,
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
-    }
+    },
   },
   modules: {
+    ["sanity"]: {
+      resolve: "./modules/sanity",
+      options: {
+        api_token: process.env.SANITY_API_TOKEN,
+        project_id: process.env.SANITY_PROJECT_ID,
+        api_version: new Date().toISOString().split("T")[0],
+        dataset: "production",
+      },
+    },
     [Modules.NOTIFICATION]: {
       resolve: "@medusajs/medusa/notification",
       options: {
@@ -39,7 +48,7 @@ module.exports = defineConfig({
             id: "resend",
             options: {
               channels: ["email"],
-              api_key: process.env.RESEND_API_KEY
+              api_key: process.env.RESEND_API_KEY,
             },
           },
         ],
@@ -51,10 +60,10 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "./modules/test-ful",
-            id: "my-fulfillment"
-          }
-        ]
-      }
-    }
-  }
+            id: "my-fulfillment",
+          },
+        ],
+      },
+    },
+  },
 })

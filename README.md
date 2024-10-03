@@ -34,7 +34,7 @@
 
 ## Compatibility
 
-This starter is compatible with versions >= 1.8.0 of `@medusajs/medusa`. 
+This starter is compatible with versions >= 1.8.0 of `@medusajs/medusa`.
 
 ## Getting Started
 
@@ -68,3 +68,41 @@ Join our [Discord server](https://discord.com/invite/medusajs) to meet other com
 - [Twitter](https://twitter.com/medusajs)
 - [LinkedIn](https://www.linkedin.com/company/medusajs)
 - [Medusa Blog](https://medusajs.com/blog/)
+
+  "resolutions": {
+  "@medusajs/admin-sdk": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/admin/admin-sdk",
+  "@medusajs/medusa-cli": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/cli/medusa-cli",
+  "@medusajs/medusa": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/medusa",
+  "@medusajs/api-key": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/api-key",
+  "@medusajs/auth": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/auth",
+  "@medusajs/cache-redis": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/cache-redis",
+  "@medusajs/customer": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/customer",
+  "@medusajs/event-bus-redis": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/event-bus-redis",
+  "@medusajs/inventory-next": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/inventory-next",
+  "@medusajs/modules-sdk": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/core/modules-sdk",
+  "@medusajs/workflows-sdk": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/core/workflows-sdk",
+  "@medusajs/utils": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/core/utils",
+  "@medusajs/pricing": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/pricing",
+  "@medusajs/fulfillment": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/fulfillment",
+  "@medusajs/file": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/file",
+  "@medusajs/product": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/product",
+  "@medusajs/promotion": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/promotion",
+  "@medusajs/region": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/region",
+  "@medusajs/order": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/order",
+  "@medusajs/notification": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/notification",
+  "@medusajs/store": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/store",
+  "@medusajs/tax": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/tax",
+  "@medusajs/user": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/user",
+  "@medusajs/workflow-engine-redis": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/workflow-engine-redis",
+  "@medusajs/types": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/core/types",
+  "@medusajs/cache-inmemory": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/cache-inmemory",
+  "@medusajs/event-bus-local": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/event-bus-local",
+  "@medusajs/stock-location-next": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/stock-location-next",
+  "@medusajs/sales-channel": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/sales-channel",
+  "@medusajs/cart": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/cart",
+  "@medusajs/currency": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/currency",
+  "@medusajs/payment": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/modules/payment",
+  "@medusajs/core-flows": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/core/core-flows",
+  "@medusajs/orchestration": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/core/orchestration",
+  "@medusajs/framework": "portal:/Users/sebastianrindom/Developer/medusa/medusa-js/packages/core/framework"
+  },

@@ -1,9 +1,19 @@
 import { AbstractNotificationProviderService } from "@medusajs/framework/utils"
 import { Logger } from "@medusajs/medusa";
 import { ProviderSendNotificationDTO, ProviderSendNotificationResultsDTO } from "@medusajs/types";
-import { Resend } from 'resend';
-import emails from "./emails"
+// import { Resend } from 'resend';
+// import emails from "./emails"
+//
+class Resend {
+  constructor(api_key: string) { }
+  emails = {
+    send: async (options): Promise<{ data: Record<string, any>, error?: any }> => {
+      return { data: { id: "123" } }
+    }
+  }
+}
 
+const emails = {}
 
 type ResendOptions = {
   api_key: string
@@ -38,7 +48,7 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
       from: 'Sebrindom <seb@sebrindom.blue>',
       to: [notification.to],
       subject: 'Sending messages',
-      react: <Template {...notification.data} />
+      // react: <Template {...notification.data} />
     })
 
     if (error) {
