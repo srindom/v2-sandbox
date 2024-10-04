@@ -32,12 +32,23 @@ type SanityOptions = {
   project_id: string
   api_version: string
   dataset: "production" | "development"
+  type_map?: Record<SyncDocumentTypes, string>
+  studio_url?: string
 }
+
+type TransformationMap<T> = Record<
+  SyncDocumentTypes,
+  (data: SyncDocumentInputs<T>) => any
+>
 
 type InjectedDependencies = {}
 
 export default class SanityModuleService {
   private client: SanityClient
+  private studioUrl?: string
+  private typeMap: Record<SyncDocumentTypes, string>
+  private createTransformationMap: TransformationMap<SyncDocumentTypes>
+  private updateTransformationMap: TransformationMap<SyncDocumentTypes>
 
   constructor({}: InjectedDependencies, options: SanityOptions) {
     this.client = createClient({
@@ -46,6 +57,29 @@ export default class SanityModuleService {
       dataset: options.dataset,
       token: options.api_token,
     })
+
+    this.studioUrl = options.studio_url
+    this.typeMap = Object.assign(
+      {},
+      {
+        [SyncDocumentTypes.PRODUCT]: "product",
+        [SyncDocumentTypes.CATEGORY]: "category",
+        [SyncDocumentTypes.COLLECTION]: "collection",
+      },
+      options.type_map || {}
+    )
+
+    this.createTransformationMap = {
+      [SyncDocumentTypes.PRODUCT]: this.transformProductForCreate,
+      [SyncDocumentTypes.CATEGORY]: this.transformCategoryForCreate,
+      [SyncDocumentTypes.COLLECTION]: this.transformCollectionForCreate,
+    }
+
+    this.updateTransformationMap = {
+      [SyncDocumentTypes.PRODUCT]: this.transformProductForUpdate,
+      [SyncDocumentTypes.CATEGORY]: this.transformCategoryForUpdate,
+      [SyncDocumentTypes.COLLECTION]: this.transformCollectionForUpdate,
+    }
   }
 
   async upsertSyncDocument<T extends SyncDocumentTypes>(
@@ -65,12 +99,7 @@ export default class SanityModuleService {
     data: SyncDocumentInputs<T>,
     options?: FirstDocumentMutationOptions
   ) {
-    const doc = {
-      _type: type,
-      _id: data.id,
-      handle: data.handle,
-    }
-
+    const doc = this.createTransformationMap[type](data)
     return await this.client.create(doc, options)
   }
 
@@ -78,8 +107,7 @@ export default class SanityModuleService {
     type: T,
     data: SyncDocumentInputs<T>
   ) {
-    const operations = { set: { handle: data.handle } }
-
+    const operations = this.updateTransformationMap[type](data)
     return await this.client.patch(data.id, operations).commit()
   }
 
@@ -100,6 +128,14 @@ export default class SanityModuleService {
     }
   }
 
+  async getStudioLink(type: string, id: string, config: { explicit_type?: boolean } = {}) {
+    const resolvedType = config.explicit_type ? type : this.typeMap[type]
+    if (!this.studioUrl) {
+      throw new Error("No studio URL provided")
+    }
+    return `${this.studioUrl}/structure/${resolvedType};${id}`
+  }
+
   async list(filter, config) {
     const data = await this.client.getDocuments(filter.id)
 
@@ -107,5 +143,76 @@ export default class SanityModuleService {
       id: doc._id,
       ...doc,
     }))
+  }
+
+  private transformProductForUpdate = (product: ProductDTO) => {
+    return {
+      set: {
+        title: product.title,
+        handle: product.handle,
+      },
+    }
+  }
+
+  private transformCategoryForUpdate = (category: ProductCategoryDTO) => {
+    return {
+      set: {
+        title: category.name,
+        handle: category.handle,
+        parent_category: category.parent_category_id
+          ? {
+              _type: "reference",
+              _ref: category.parent_category_id,
+            }
+          : undefined,
+        children_categories: category.category_children.map((child) => ({
+          _type: "reference",
+          _ref: child.id,
+          _key: child.id,
+        })),
+      },
+    }
+  }
+  private transformCollectionForUpdate = (collection: ProductCollectionDTO) => {
+    return {
+      set: {
+        title: collection.title,
+        handle: collection.handle,
+      },
+    }
+  }
+
+  private transformProductForCreate = (product: ProductDTO) => {
+    return {
+      _type: this.typeMap[SyncDocumentTypes.PRODUCT],
+      _id: product.id,
+      title: product.title,
+      handle: product.handle,
+    }
+  }
+  private transformCategoryForCreate = (category: ProductCategoryDTO) => {
+    return {
+      _type: this.typeMap[SyncDocumentTypes.CATEGORY],
+      _id: category.id,
+      title: category.name,
+      handle: category.handle,
+      parent_category: {
+        _type: "reference",
+        _ref: category.parent_category_id,
+      },
+      children_categories: category.category_children.map((child) => ({
+        _type: "reference",
+        _ref: child.id,
+        _key: child.id,
+      })),
+    }
+  }
+  private transformCollectionForCreate = (collection: ProductCollectionDTO) => {
+    return {
+      _type: this.typeMap[SyncDocumentTypes.COLLECTION],
+      _id: collection.id,
+      title: collection.title,
+      handle: collection.handle,
+    }
   }
 }

@@ -12,7 +12,7 @@ const step = createStep
 const wf = createWorkflow
 
 type Input = {
-  product_ids?: string[]
+  collection_ids?: string[]
 }
 
 const syncStep = step(
@@ -27,12 +27,12 @@ const syncStep = step(
     let hasMore = true
     let offset = 0
     let filter: FilterableProductProps = {}
-    if (isDefined(input.product_ids)) {
-      filter.id = input.product_ids
+    if (isDefined(input.collection_ids)) {
+      filter.id = input.collection_ids
     }
 
     while (hasMore) {
-      const [products, count] = await productModule.listAndCountProducts(
+      const [collections, count] = await productModule.listAndCountProductCollections(
         filter,
         {
           select: ["id", "handle", "title"],
@@ -43,23 +43,23 @@ const syncStep = step(
       )
 
       await promiseAll(
-        products.map((prod) => {
-          return sanityModule.upsertSyncDocument("product", prod)
+        collections.map((prod) => {
+          return sanityModule.upsertSyncDocument("collection", prod)
         })
       )
 
       offset += batchSize
       hasMore = offset < count
-      total += products.length
+      total += collections.length
     }
 
     return new StepResponse({ total })
   }
 )
 
-const id = "sanity-product-sync"
+const id = "sanity-collection-sync"
 
-export const sanityProductSyncWorkflow = wf(
+export const sanityCollectionSyncWorkflow = wf(
   { name: id, retentionTime: 10000 },
   function (input: Input) {
     const result = syncStep(input)

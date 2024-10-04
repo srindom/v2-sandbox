@@ -93,7 +93,7 @@ export const useSanityDocument = (
     UseQueryOptions<
       Record<any, any>,
       FetchError,
-      { sanity_document: Record<any, any> },
+      { sanity_document: Record<any, any>, studio_url: string },
       QueryKey
     >,
     "queryKey" | "queryFn"

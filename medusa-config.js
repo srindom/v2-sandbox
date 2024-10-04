@@ -37,6 +37,11 @@ module.exports = defineConfig({
         project_id: process.env.SANITY_PROJECT_ID,
         api_version: new Date().toISOString().split("T")[0],
         dataset: "production",
+        studio_url: "https://medusajs.sanity.studio",
+        type_map: {
+          collection: "medusa_collection",
+          category: "medusa_category",
+        }
       },
     },
     [Modules.NOTIFICATION]: {

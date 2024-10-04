@@ -1,10 +1,10 @@
 import { MedusaRequest } from "@medusajs/framework"
 import { Modules } from "@medusajs/framework/utils"
 import { IWorkflowEngineService } from "@medusajs/types"
-import { sanityProductSyncWorkflow } from "../../../../workflows/sanity-sync-products"
+import { sanityFullSyncWorkflow } from "../../../../workflows/sanity-full-sync"
 
 export const POST = async (req, res) => {
-  const { transaction } = await sanityProductSyncWorkflow(req.scope).run({
+  const { transaction } = await sanityFullSyncWorkflow(req.scope).run({
     input: {},
   })
 
@@ -18,7 +18,7 @@ export const GET = async (req: MedusaRequest, res) => {
 
   const [executions, count] = await wfEngine.listAndCountWorkflowExecutions(
     {
-      workflow_id: sanityProductSyncWorkflow.getName(),
+      workflow_id: sanityFullSyncWorkflow.getName(),
     },
     { order: { created_at: "DESC" } }
   )

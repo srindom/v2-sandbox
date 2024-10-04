@@ -12,7 +12,7 @@ const step = createStep
 const wf = createWorkflow
 
 type Input = {
-  product_ids?: string[]
+  category_ids?: string[]
 }
 
 const syncStep = step(
@@ -27,39 +27,42 @@ const syncStep = step(
     let hasMore = true
     let offset = 0
     let filter: FilterableProductProps = {}
-    if (isDefined(input.product_ids)) {
-      filter.id = input.product_ids
+    if (isDefined(input.category_ids)) {
+      filter.id = input.category_ids
     }
 
     while (hasMore) {
-      const [products, count] = await productModule.listAndCountProducts(
+      const [categories, count] = await productModule.listAndCountProductCategories(
         filter,
         {
-          select: ["id", "handle", "title"],
+          select: ["id", "name", "handle", "parent_category_id", "category_children.id"],
+          relations: ["category_children"],
           skip: offset,
           take: batchSize,
           order: { id: "ASC" },
         }
       )
 
+      console.log(categories)
+
       await promiseAll(
-        products.map((prod) => {
-          return sanityModule.upsertSyncDocument("product", prod)
+        categories.map((prod) => {
+          return sanityModule.upsertSyncDocument("category", prod)
         })
       )
 
       offset += batchSize
       hasMore = offset < count
-      total += products.length
+      total += categories.length
     }
 
     return new StepResponse({ total })
   }
 )
 
-const id = "sanity-product-sync"
+const id = "sanity-category-sync"
 
-export const sanityProductSyncWorkflow = wf(
+export const sanityCategorySyncWorkflow = wf(
   { name: id, retentionTime: 10000 },
   function (input: Input) {
     const result = syncStep(input)
